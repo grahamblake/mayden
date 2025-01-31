@@ -1,0 +1,10 @@
+services:
+  webserver:
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./src:/var/www/html
+    restart: unless-stopped
+
