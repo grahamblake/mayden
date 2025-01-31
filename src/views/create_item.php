@@ -1,6 +1,3 @@
-<?php
-echo "list is" . $list;
-?>
 <!doctype html>
 <html>
   <head>

@@ -12,11 +12,5 @@ class FileTest extends TestCase
         $c = new File\File();
         $c->write(["one","two","three"]);
 
-        $fp = fopen("./storage/file2.csv", "w");
-
-$r=fputcsv($fp, ["one","two","three"]);
-fputcsv($fp, ["a","b","c"]);
-fclose($fp);
-        $this->assertEquals("test", $c->test());
     }
 }

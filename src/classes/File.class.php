@@ -4,20 +4,21 @@ namespace File;
 
 class File
 {
-  public function __construct()
+  private string $filename;
+
+  public function __construct(string $filename = './storage/list.csv')
   {
-    // print "File class loaded\n";
+    $this->filename = $filename;
     
   }
   
-  public function test(): string
-  {
-    return "test";
-  }
-
+  /**
+   * Read all the data from the file
+   */
   public function readAll(): array
   {
-    $fp = fopen("./storage/file2.csv", "r");
+    
+    $fp = fopen($this->filename, "r");
 
     // Check for no file
     if (!$fp) {
@@ -28,22 +29,28 @@ class File
       $data[] = $row;
     }
     fclose($fp);
+
     return $data;
   }
 
-  public function write($data)
+  /**
+   * Write data to the file
+   */
+  public function write(array $data): void
   {
-    $fp = fopen("./storage/file2.csv", "a");
-//chmod ("./storage/file.csv", 0644);
-//fwrite($fp, "test");
-$r=fputcsv($fp, $data);
-// fputcsv($fp, ["a","b","c"]);
-fclose($fp);
+    $fp = fopen($this->filename, "a");
+
+    fputcsv($fp, $data);
+
+    fclose($fp);
   }
 
+  /**
+   * Find a specific  in the file
+   */
   public function find($value): array|null
   {
-    $fp = fopen("./storage/file2.csv", "r");
+    $fp = fopen($this->filename, "r");
     
     // Check for no file
     if (!$fp) {
@@ -60,28 +67,31 @@ fclose($fp);
     return $data;
   }
 
+  /**
+   * Update a specific row in the file with new item.
+   */
   public function update($needle, $value): array|null
   {
-    $fp = fopen("./storage/file2.csv", "r");
+    $fp = fopen($this->filename, "r");
     
     // Check for no file
     if (!$fp) {
       return null;
     }
     $newRows = [];
-echo "needle: " . $needle . "\n";
+
+    // Find the row to update
     while ($row = fgetcsv($fp)) {
+      // If found update the row
       if ($row[0] == $needle) {
         $row[] = $value;
-        $newRows[] = $row;
-        echo 'needle found';
-        } else {
-          $newRows[] = $row;
-        }
+      }
+      $newRows[] = $row;
     }
     fclose($fp);
 
-    $fp = fopen("./storage/file2.csv", "w");
+    // Open the file and write the new data
+    $fp = fopen($this->filename, "w");
 
     if (!$fp) {
       return null;
@@ -89,9 +99,9 @@ echo "needle: " . $needle . "\n";
 
     foreach ($newRows as $row) {
       fputcsv($fp, $row);
-      echo "Row: " . $row[1] . "\n";
     }
     fclose($fp);
+
     return $newRows;
   }
 }
