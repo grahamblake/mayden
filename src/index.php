@@ -1,27 +1,46 @@
 <?php
-require './classes/File.class.php';
-use File\File;
 
-print "TEsting2";
-echo "Test\n";
-$fp = fopen("./storage/file2.csv", "w");
-//chmod ("./storage/file.csv", 0644);
-//fwrite($fp, "test");
-$r=fputcsv($fp, ["one","two","three"]);
-fputcsv($fp, ["a","b","c"]);
-fclose($fp);
-echo "result is " . $r;
+require './controllers/list.php';
+require './controllers/item.php';
 
-if(($fp=fopen("./storage/file2.csv","rb")) !== FALSE) {
-echo "opened";
-// echo "state: " . fgetcsv($fp) . "\n";
-while(($data = fgetcsv($fp)) !== FALSE) {
-echo $data[0] . "\n";
+use Controllers\ListController;
+use Controllers\ItemController;
+
+
+// Get the route
+$strippedFirst = substr($_SERVER['REQUEST_URI'], 1);
+$route = explode('/', $strippedFirst);
+
+
+// Remove the first element of the array
+$route = explode('?',$route[1]);
+
+$lists = new ListController();
+$items = new ItemController();
+
+// Determine the route
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+  switch ($route[0]) {
+    case 'lists':
+      $lists->create($_POST);
+      break;
+    case 'list':
+      $lists->index();
+      break;
+    case 'edit':
+      $lists->edit($_GET);
+      break;
+    case 'createitem':
+      $items->create($_GET);
+      break;
+  }
+} else {
+  switch ($route[0]) {
+    case 'lists':
+      $lists->store($_POST);
+      break;
+    case 'items':
+      $items->store($_POST);
+      break;
+  }
 }
-}
-echo "Done!!";
-$x = new File();
-
-echo $x->test();
-
-echo '<a href="i2.php">link</a>';
