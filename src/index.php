@@ -1,8 +1,10 @@
 <?php
-
+//http://localhost/index.php/list
 require './controllers/list.php';
+require './controllers/item.php';
 
 use Controllers\ListController;
+use Controllers\ItemController;
 // Direct user to correct route
 // $_SERVER["REQUEST_METHOD"] == "POST"
 
@@ -23,6 +25,7 @@ $route = explode('?',$route[1]);
 // echo $route[0] . "<br/>";
 
 $lists = new ListController();
+$items = new ItemController();
 
 // Determine the route
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -34,11 +37,21 @@ switch ($route[0]) {
   case 'list':
     $lists->index();
     break;
+  case 'edit':
+    $lists->edit($_GET);
+    break;
+  case 'createitem':
+    // echo "list******";
+    $items->create($_GET);
+    break;
 }
 } else {
 switch ($route[0]) {
   case 'lists':
     $lists->store($_POST);
+    break;
+  case 'items':
+    $items->store($_POST);
     break;
   // case 'list':
   //   $lists->store();

@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-require './classes/File.class.php';
+require_once './classes/File.class.php';
 use File\File;
 
 class ListController
@@ -48,5 +48,32 @@ class ListController
     header('Location: /index.php/list');
     // header('Location: /views/index_list.html');
     exit();
+  }
+
+  public function edit($get)
+  {
+    echo $get['name'];
+    // Need to fetch the list details
+    $f = new File();
+    $data = $f->find($get['name']);
+
+    if (count($data) == 0) {
+      echo "No data found";
+      exit();
+    }
+
+    $listName = $get['name'];
+    // Extract list items
+    // $listItems = explode(",", $data[1]);
+    // remove array cell
+  //  echo "data is/was";
+    //print_r($data);
+    array_shift($data);
+//echo "list items are";
+    //print_r($listItems);
+    //echo "data now";
+    //print_r($data);
+    
+    include './views/view_list.php';
   }
 }

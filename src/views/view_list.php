@@ -2,10 +2,11 @@
   echo "<!doctype html>
   <html>
     <head>
-      <title>View Lists</title>
+      <title>Edit Lists</title>
     </head>
     <body>
-      <h1>View Lists</h1>
+      <h1>Edit Lists</h1>
+      <p>" . $listName . "</p>
       <table>
         <thead>
           <tr>
@@ -13,15 +14,15 @@
           </tr>
         </thead>
         <tbody>";
-        foreach ($data as $row) {
+        foreach ($data as $item) {
             echo "<tr>";
-            echo "<td>" . $row[0] . "</td>";
-            echo "<td><a href='/index.php/edit?name=". $row[0]."'>EDIT</td>";
+            echo "<td>" . $item . "</td>";
+            echo "<td><a href='/index.php/edit'>EDIT</td>";
             echo "</tr>";  
         }
 
   echo "</tbody>
       </table>
-      <a href='/views/create_list.html'>Create List</a>
+      <a href='/index.php/createitem?list=".$listName."'>Add Item</a>
     </body>
   </html>";
